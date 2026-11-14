@@ -1435,7 +1435,13 @@ func (w *linuxWebviewWindow) windowHide() {
 }
 
 func (w *linuxWebviewWindow) isFullscreen() bool {
+	if w.window == nil {
+		return false
+	}
 	gdkWindow := C.gtk_widget_get_window(w.gtkWidget())
+	if gdkWindow == nil {
+		return false
+	}
 	state := C.gdk_window_get_state(gdkWindow)
 	return state&C.GDK_WINDOW_STATE_FULLSCREEN > 0
 }
@@ -1446,13 +1452,25 @@ func (w *linuxWebviewWindow) isFocused() bool {
 }
 
 func (w *linuxWebviewWindow) isMaximised() bool {
+	if w.window == nil {
+		return false
+	}
 	gdkwindow := C.gtk_widget_get_window(w.gtkWidget())
+	if gdkwindow == nil {
+		return false
+	}
 	state := C.gdk_window_get_state(gdkwindow)
 	return state&C.GDK_WINDOW_STATE_MAXIMIZED > 0 && state&C.GDK_WINDOW_STATE_FULLSCREEN == 0
 }
 
 func (w *linuxWebviewWindow) isMinimised() bool {
+	if w.window == nil {
+		return false
+	}
 	gdkwindow := C.gtk_widget_get_window(w.gtkWidget())
+	if gdkwindow == nil {
+		return false
+	}
 	state := C.gdk_window_get_state(gdkwindow)
 	return state&C.GDK_WINDOW_STATE_ICONIFIED > 0
 }
